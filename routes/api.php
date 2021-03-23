@@ -20,3 +20,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('/test', [UserController::class, 'get_user']);
+Route::get('/main_records/classes', [UserController::class, 'get_classes']);
