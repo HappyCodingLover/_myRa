@@ -27,21 +27,21 @@ class UserController extends Controller
         $languages_count = count($leagueData);
         $fortunas = DB::connection('fortuna_conn')->select("select sum(fortunas) as fortunas from students where language='English' and name='$telegramID'");
 
-        foreach ($leagueData as $league) {
+        //foreach ($leagueData as $league) {
             // $position = $league->language;
             // // $students = Student::where('language', $request->language)->where('exercise', $request->type)->orderBy('fortunas','desc')->get()->unique('name')->values()->all();
             // $oneLeague = DB::connection('fortuna_conn')->table('students')->where('language', $league->language)->orderBy('fortunas', 'desc')->get();
-            $language = [];
+         //   $language = [];
             $result = DB::connection("fortuna_conn")->select(" select * from (select *, @row_no := @row_no+1 AS row_number from (select sum(fortunas) as val,
-            `name` from students where language='$league->language' group by `name` order by  val desc) as tb,(SELECT @row_no := 0) t) as tb1 where name = '$telegramID'")
+            `name` from students where language='English' group by `name` order by  val desc) as tb,(SELECT @row_no := 0) t) as tb1 where name = '$telegramID'")
             ;
             
             // $result = DB::select("select * from (select *, @row_no := @row_no+1 AS row_number from (select sum(fortunas) as val,
             // `name` from students where language='English' group by `name` order by  val desc) as tb,(SELECT @row_no := 0) t) as tb1 where name = '$telegramID'")
             // ;
-            $tops = DB::connection('fortuna_conn')->select("select sum(fortunas) as val,`name` from students where language='$league->language' group by `name` order by  val desc limit $number");
+            $tops = DB::connection('fortuna_conn')->select("select sum(fortunas) as val,`name` from students where language='English' group by `name` order by  val desc limit $number");
             // $tops = DB::select("select sum(fortunas) as val,`name` from students where language='$league->language' group by `name` order by  val desc limit $number");
-        }
+     //   }
         return response()->json(['userData' => $user, 'leagueData' => $leagueData, 'messageData' =>  $messageData, 'myRank' => $result[0], 'tops' => $tops, 'fortunas' => $fortunas[0]->fortunas]);
     }
 
